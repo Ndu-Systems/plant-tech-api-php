@@ -1,10 +1,9 @@
 
 
 <?php
-include '../common';
 
 
-class Plant
+class Bed
 {
     //DB Stuff
     private $conn;
@@ -16,58 +15,54 @@ class Plant
     }
 
 
-    public function getClientDocuments($ClientId)
+    public function getBeds()
     {
 
-        $query = "SELECT * FROM documents WHERE ClientId =? and StatusId=?";
+        $query = "SELECT * FROM bed";
 
         //Prepare statement
         $stmt = $this->conn->prepare($query);
 
         //Execute query
-        $stmt->execute(array($ClientId,1));
+        $stmt->execute(array());
 
         return $stmt;
     }
 
     //Add  
     public function add(
-        $ClientId, 
-        $InvestmentId, 
-        $DocumentCode, 
-        $DocumentName, 
-        $DocumentUrl, 
+        $Name, 
+        $LocationId, 
+        $Quantity, 
         $CreateUserId, 
         $ModifyUserId, 
         $StatusId
     ) {
-        $id = getUuid();
-        $query = "INSERT INTO documents (
-                                        DocumentId, 
-                                        ClientId, 
-                                        InvestmentId,
-                                        DocumentCode, 
-                                        DocumentName, 
-                                        DocumentUrl, 
-                                        CreateUserId, 
-                                        ModifyUserId, 
-                                        StatusId
+         $id = getUuid($this->conn);
+        $query = "INSERT INTO bed (
+                                    BedId, 
+                                    Name, 
+                                    LocationId, 
+                                    Quantity, 
+                                    CreateUserId, 
+                                    ModifyUserId, 
+                                    StatusId
+
                                         )
-                    VALUES (UUID(),?, ?, ?, ?, ?,?, ?, ?)           
+                    VALUES (?,?, ?, ?, ?, ?,?)           
                    ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $ClientId, 
-                $InvestmentId, 
-                $DocumentCode, 
-                $DocumentName, 
-                $DocumentUrl, 
+                $id, 
+                $Name, 
+                $LocationId, 
+                $Quantity, 
                 $CreateUserId, 
                 $ModifyUserId, 
                 $StatusId
             ))) {
-                return true;
+                return $id;
             }
         } catch (Exception $e) {
             return $e;
@@ -86,4 +81,6 @@ class Plant
             return $e;
         }
     }
+
+ 
 }

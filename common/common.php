@@ -1,7 +1,11 @@
 <?php
 
- function  getUuid(){
-    $stmt = $this->conn->prepare("SELECT uuid() as Id from dual");
+ function  getUuid($conn){
+    $stmt = $conn->prepare("SELECT uuid() as Id from dual");
     $stmt->execute(array());
-    return $stmt;
+
+    if ($stmt->rowCount()) {
+        $uuid = $stmt->fetch(PDO::FETCH_ASSOC);
+        return  $uuid['Id'];
+    }
     }

@@ -38,6 +38,7 @@ class Bed
         $ModifyUserId, 
         $StatusId
     ) {
+        $id = getUuid();
         $query = "INSERT INTO bed (
                                     BedId, 
                                     Name, 
@@ -48,11 +49,12 @@ class Bed
                                     StatusId
 
                                         )
-                    VALUES (UUID(),?, ?, ?, ?, ?,?)           
+                    VALUES (?,?, ?, ?, ?, ?,?)           
                    ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
+                $id, 
                 $Name, 
                 $LocationId, 
                 $Quantity, 
@@ -60,7 +62,7 @@ class Bed
                 $ModifyUserId, 
                 $StatusId
             ))) {
-                return true;
+                return $id;
             }
         } catch (Exception $e) {
             return $e;

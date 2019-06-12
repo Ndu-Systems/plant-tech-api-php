@@ -3,11 +3,11 @@
 <?php
 
 
-class Bed
+class Plant
 {
     //DB Stuff
     private $conn;
-    //Constructor to DB    
+    //Constructor to DB
 
     public function __construct($db)
     {
@@ -15,10 +15,9 @@ class Bed
     }
 
 
-    public function getBeds()
+    public function getPlants()
     {
-
-        $query = "SELECT * FROM bed";
+        $query = "SELECT * FROM plant";
 
         //Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -29,58 +28,101 @@ class Bed
         return $stmt;
     }
 
-    //Add  
+    //Add
     public function add(
-        $Name, 
-        $LocationId, 
-        $Quantity, 
-        $CreateUserId, 
-        $ModifyUserId, 
+        $Name,
+        $Description,
+        $Views,
+        $MedicineId,
+        $CreateUserId,
+        $ModifyUserId,
         $StatusId
     ) {
-        $id = getUuid();
-        $query = "INSERT INTO bed (
-                                    BedId, 
-                                    Name, 
-                                    LocationId, 
-                                    Quantity, 
-                                    CreateUserId, 
-                                    ModifyUserId, 
+        $PlantId = getUuid($this->conn);
+        $query = "INSERT INTO plant (
+                                    PlantId,
+                                    Name,
+                                    Description,
+                                    Views,
+                                    MedicineId,
+                                    CreateUserId,
+                                    ModifyUserId,
                                     StatusId
 
                                         )
-                    VALUES (?,?, ?, ?, ?, ?,?)           
+                    VALUES (?,?, ?, ?, ?, ?,?,?)           
                    ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $id, 
-                $Name, 
-                $LocationId, 
-                $Quantity, 
-                $CreateUserId, 
-                $ModifyUserId, 
+                $PlantId,
+                $Name,
+                $Description,
+                $Views,
+                $MedicineId,
+                $CreateUserId,
+                $ModifyUserId,
                 $StatusId
             ))) {
-                return $id;
+                return $this->getById($PlantId);
             }
         } catch (Exception $e) {
             return $e;
         }
     }
 
-    //update  
+    //update
     public function update(
-        $QuiID
+        $Name,
+        $Description,
+        $Views,
+        $MedicineId,
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId,
+        $PlantId
+
     ) {
-        $query = "UPDATE documents SET Status = ? Where QuiID=? ";
+        $query = "UPDATE plant
+        SET 
+        Name=?,
+        Description=?,
+        Views=?,
+        MedicineId=?,
+        CreateUserId=?,
+        ModifyUserId=?,
+        StatusId=?
+        Where
+        PlantId=?
+         ";
         try {
             $stmt = $this->conn->prepare($query);
-            return $stmt->execute(array(2, $QuiID));
+            $stmt->execute(array(
+                $Name,
+                $Description,
+                $Views,
+                $MedicineId,
+                $CreateUserId,
+                $ModifyUserId,
+                $StatusId,
+                $PlantId
+        ));
+
+            return $this->getById($PlantId);
         } catch (Exception $e) {
             return $e;
         }
     }
 
- 
+    public function getById($PlantId)
+    {
+        $query = "SELECT * FROM plant WHERE PlantId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($PlantId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
 }

@@ -1,20 +1,20 @@
 <?php
  include_once '../../config/Database.php';
- include_once '../../models/Bed.php';
+ include_once '../../models/Plant.php';
 
  //connect to db
 $database = new Database();
 $db = $database->connect();
 
 // instantiate investment object
-$bed = new Bed($db);
+$plant = new Plant($db);
 
-$result = $bed->getBeds();
+$result = $plant->getPlants();
 $outPut = array();
 
 if($result->rowCount()){
-    $beds = $result->fetchAll(PDO::FETCH_ASSOC);
-    $outPut = $beds;
+    $plants = $result->fetchAll(PDO::FETCH_ASSOC);
+    $outPut = $plants;
 
 }
 echo json_encode($outPut);

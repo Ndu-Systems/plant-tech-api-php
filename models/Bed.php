@@ -7,7 +7,7 @@ class Bed
 {
     //DB Stuff
     private $conn;
-    //Constructor to DB    
+    //Constructor to DB
 
     public function __construct($db)
     {
@@ -17,7 +17,6 @@ class Bed
 
     public function getBeds()
     {
-
         $query = "SELECT * FROM bed";
 
         //Prepare statement
@@ -29,16 +28,16 @@ class Bed
         return $stmt;
     }
 
-    //Add  
+    //Add
     public function add(
-        $Name, 
-        $LocationId, 
-        $Quantity, 
-        $CreateUserId, 
-        $ModifyUserId, 
+        $Name,
+        $LocationId,
+        $Quantity,
+        $CreateUserId,
+        $ModifyUserId,
         $StatusId
     ) {
-         $id = getUuid($this->conn);
+        $id = getUuid($this->conn);
         $query = "INSERT INTO bed (
                                     BedId, 
                                     Name, 
@@ -54,33 +53,67 @@ class Bed
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $id, 
-                $Name, 
-                $LocationId, 
-                $Quantity, 
-                $CreateUserId, 
-                $ModifyUserId, 
+                $id,
+                $Name,
+                $LocationId,
+                $Quantity,
+                $CreateUserId,
+                $ModifyUserId,
                 $StatusId
             ))) {
-                return $id;
+                return $this->getById($id);
             }
         } catch (Exception $e) {
             return $e;
         }
     }
 
-    //update  
+    //update
     public function update(
-        $QuiID
+        $Name,
+        $LocationId,
+        $Quantity,
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId,
+        $BedId
     ) {
-        $query = "UPDATE documents SET Status = ? Where QuiID=? ";
+        $query = "UPDATE bed
+        SET 
+        Name = ?, 
+        LocationId=?, 
+        Quantity=?, 
+        CreateUserId=?, 
+        ModifyUserId=?, 
+        StatusId=?
+        Where
+        BedId=?
+         ";
         try {
             $stmt = $this->conn->prepare($query);
-            return $stmt->execute(array(2, $QuiID));
+            $stmt->execute(array($Name,
+            $LocationId,
+            $Quantity,
+            $CreateUserId,
+            $ModifyUserId,
+            $StatusId,
+            $BedId));
+
+            return $this->getById($BedId);
         } catch (Exception $e) {
             return $e;
         }
     }
 
- 
+    public function getById($BedId)
+    {
+        $query = "SELECT * FROM bed WHERE BedId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($BedId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
 }

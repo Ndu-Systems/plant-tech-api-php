@@ -18,7 +18,6 @@ $PlantId=$data->PlantId;
 $database = new Database();
 $db = $database->connect();
 
-//Instantiate user object
 
 $plant = new Plant($db);
 

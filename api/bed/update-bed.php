@@ -15,7 +15,6 @@ $BedId=$data->BedId;
 $database = new Database();
 $db = $database->connect();
 
-//Instantiate user object
 
 $bed = new Bed($db);
 

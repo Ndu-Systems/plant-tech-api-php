@@ -18,13 +18,8 @@ class Plant
     public function getPlants()
     {
         $query = "SELECT * FROM plant";
-
-        //Prepare statement
         $stmt = $this->conn->prepare($query);
-
-        //Execute query
         $stmt->execute(array());
-
         return $stmt;
     }
 

@@ -6,7 +6,6 @@
 $database = new Database();
 $db = $database->connect();
 
-// instantiate investment object
 $bed = new Bed($db);
 
 $result = $bed->getBeds();

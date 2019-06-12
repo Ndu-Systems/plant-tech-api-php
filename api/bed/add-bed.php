@@ -14,7 +14,6 @@ $StatusId=$data->StatusId;
 $database = new Database();
 $db = $database->connect();
 
-//Instantiate user object
 
 $bed = new Bed($db);
 

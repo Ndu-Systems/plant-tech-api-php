@@ -18,13 +18,8 @@ class Bed
     public function getBeds()
     {
         $query = "SELECT * FROM bed";
-
-        //Prepare statement
         $stmt = $this->conn->prepare($query);
-
-        //Execute query
         $stmt->execute(array());
-
         return $stmt;
     }
 

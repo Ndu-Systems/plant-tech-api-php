@@ -6,7 +6,6 @@
 $database = new Database();
 $db = $database->connect();
 
-// instantiate investment object
 $plant = new Plant($db);
 
 $result = $plant->getPlants();

@@ -1,6 +1,7 @@
 <?php
 
- function error($msg)
-{
- return  $err["message"] = $msg;
-}
+ function  getUuid(){
+    $stmt = $this->conn->prepare("SELECT uuid() as Id from dual");
+    $stmt->execute(array());
+    return $stmt;
+    }

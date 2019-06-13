@@ -75,7 +75,7 @@ class PlantSeason
         SeasonId = ?,
         CreateUserId = ?,
         ModifyUserId = ?,
-        StatusId = ?
+        StatusId = ?,
         ModifyDate=Now()
         Where Id =?
          ";

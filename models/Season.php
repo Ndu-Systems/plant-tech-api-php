@@ -28,9 +28,7 @@ class Season
     public function add(
         $Name,
         $CreateUserId,
-        $CreateDate,
         $ModifyUserId,
-        $ModifyDate,
         $StatusId
     ) {
         $SeasonId = getUuid($this->conn);
@@ -49,12 +47,10 @@ class Season
                 $SeasonId,
                 $Name,
                 $CreateUserId,
-                $CreateDate,
                 $ModifyUserId,
-                $ModifyDate,
                 $StatusId
             ))) {
-                return $this->getById($SeasonId);
+                return $this->getById($this->conn->lastInsertId());
             }
         } catch (Exception $e) {
             return $e;
@@ -65,9 +61,7 @@ class Season
     public function update(
         $Name,
         $CreateUserId,
-        $CreateDate,
         $ModifyUserId,
-        $ModifyDate,
         $StatusId,
         $SeasonId
     ) {
@@ -75,10 +69,8 @@ class Season
         SET 
         Name = ?,
         CreateUserId = ?,
-        CreateDate = ?,
         ModifyUserId = ?,
-        ModifyDate = ?,
-        StatusId = ?
+        StatusId = ?,
         ModifyDate=Now()
         Where SeasonId =?
          ";
@@ -87,9 +79,7 @@ class Season
             $stmt->execute(array(
                 $Name,
                 $CreateUserId,
-                $CreateDate,
                 $ModifyUserId,
-                $ModifyDate,
                 $StatusId,
                 $SeasonId
         ));
@@ -100,12 +90,12 @@ class Season
         }
     }
 
-    public function getById($Id)
+    public function getById($SeasonId)
     {
         $query = "SELECT * FROM season WHERE SeasonId = ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($Id));
+        $stmt->execute(array($SeasonId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);

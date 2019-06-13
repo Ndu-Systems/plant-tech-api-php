@@ -15,7 +15,7 @@ class Plant
     }
 
 
-    public function getPlants()
+    public function getAll()
     {
         $query = "SELECT * FROM plant";
         $stmt = $this->conn->prepare($query);

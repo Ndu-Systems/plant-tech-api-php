@@ -1,19 +1,19 @@
 <?php
  include_once '../../config/Database.php';
- include_once '../../models/Plant.php';
+ include_once '../../models/Plantbed.php';
 
  //connect to db
 $database = new Database();
 $db = $database->connect();
 
-$plant = new Plant($db);
+$plantbed = new Plantbed($db);
 
-$result = $plant->getAll();
+$result = $plantbed->getAll();
 $outPut = array();
 
 if($result->rowCount()){
-    $plants = $result->fetchAll(PDO::FETCH_ASSOC);
-    $outPut = $plants;
+    $beds = $result->fetchAll(PDO::FETCH_ASSOC);
+    $outPut = $beds;
 
 }
 echo json_encode($outPut);

@@ -15,7 +15,7 @@ class Plantbed
     }
 
 
-    public function getPlants()
+    public function getAll()
     {
         $query = "SELECT * FROM plantbed";
         $stmt = $this->conn->prepare($query);
@@ -25,41 +25,34 @@ class Plantbed
 
     //Add
     public function add(
-        $Name,
-        $Description,
-        $Views,
-        $MedicineId,
+        $PlantId,
+        $BedId,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
     ) {
-        $PlantId = getUuid($this->conn);
+        $Id = getUuid($this->conn);
         $query = "INSERT INTO plantbed (
+                                   Id,
                                     PlantId,
-                                    Name,
-                                    Description,
-                                    Views,
-                                    MedicineId,
+                                    BedId,
                                     CreateUserId,
                                     ModifyUserId,
                                     StatusId
-
                                         )
-                    VALUES (?,?, ?, ?, ?, ?,?,?)           
+                    VALUES (?,?, ?, ?, ?, ?)           
                    ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
+                $Id,
                 $PlantId,
-                $Name,
-                $Description,
-                $Views,
-                $MedicineId,
+                $BedId,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getById($PlantId);
+                return $this->getById($Id);
             }
         } catch (Exception $e) {
             return $e;
@@ -68,54 +61,46 @@ class Plantbed
 
     //update
     public function update(
-        $Name,
-        $Description,
-        $Views,
-        $MedicineId,
-        $CreateUserId,
-        $ModifyUserId,
-        $StatusId,
-        $PlantId
-
+                $PlantId,
+                $BedId,
+                $CreateUserId,
+                $ModifyUserId,
+                $StatusId,
+                $Id
     ) {
         $query = "UPDATE plantbed
         SET 
-        Name=?,
-        Description=?,
-        Views=?,
-        MedicineId=?,
-        CreateUserId=?,
-        ModifyUserId=?,
-        StatusId=?,
-        ModifyDate = NOW()
-        Where
-        PlantId=?
+        PlantId =?,
+        BedId =?,
+        CreateUserId =?,
+        ModifyUserId =?,
+        StatusId =?,
+        ModifyDate=Now()
+        Where Id =?
          ";
         try {
             $stmt = $this->conn->prepare($query);
             $stmt->execute(array(
-                $Name,
-                $Description,
-                $Views,
-                $MedicineId,
+                $PlantId,
+                $BedId,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
-                $PlantId
+                $Id
         ));
 
-            return $this->getById($PlantId);
+            return $this->getById($Id);
         } catch (Exception $e) {
             return $e;
         }
     }
 
-    public function getById($PlantId)
+    public function getById($Id)
     {
-        $query = "SELECT * FROM plantbed WHERE PlantId = ?";
+        $query = "SELECT * FROM plantbed WHERE Id = ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($PlantId));
+        $stmt->execute(array($Id));
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);

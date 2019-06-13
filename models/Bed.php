@@ -15,7 +15,7 @@ class Bed
     }
 
 
-    public function getBeds()
+    public function getAll()
     {
         $query = "SELECT * FROM bed";
         $stmt = $this->conn->prepare($query);

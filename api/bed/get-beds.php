@@ -8,7 +8,7 @@ $db = $database->connect();
 
 $bed = new Bed($db);
 
-$result = $bed->getBeds();
+$result = $bed->getAll();
 $outPut = array();
 
 if($result->rowCount()){

@@ -3,7 +3,7 @@
 <?php
 
 
-class Plant
+class Plantbed
 {
     //DB Stuff
     private $conn;
@@ -17,7 +17,7 @@ class Plant
 
     public function getPlants()
     {
-        $query = "SELECT * FROM plant";
+        $query = "SELECT * FROM plantbed";
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array());
         return $stmt;
@@ -34,7 +34,7 @@ class Plant
         $StatusId
     ) {
         $PlantId = getUuid($this->conn);
-        $query = "INSERT INTO plant (
+        $query = "INSERT INTO plantbed (
                                     PlantId,
                                     Name,
                                     Description,
@@ -78,7 +78,7 @@ class Plant
         $PlantId
 
     ) {
-        $query = "UPDATE plant
+        $query = "UPDATE plantbed
         SET 
         Name=?,
         Description=?,
@@ -112,7 +112,7 @@ class Plant
 
     public function getById($PlantId)
     {
-        $query = "SELECT * FROM plant WHERE PlantId = ?";
+        $query = "SELECT * FROM plantbed WHERE PlantId = ?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($PlantId));

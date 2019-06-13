@@ -80,7 +80,8 @@ class Bed
         Quantity=?, 
         CreateUserId=?, 
         ModifyUserId=?, 
-        StatusId=?
+        StatusId=?,
+        ModifyDate = NOW()
         Where
         BedId=?
          ";
